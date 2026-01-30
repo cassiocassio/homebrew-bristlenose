@@ -12,9 +12,12 @@ class Bristlenose < Formula
   depends_on "python@3.12"
 
   def install
-    venv = virtualenv_create(libexec, "python3.12")
-    system libexec/"bin/pip", "install", "bristlenose==#{version}"
+    virtualenv_create(libexec, "python3.12")
     bin.install_symlink libexec/"bin/bristlenose"
+  end
+
+  def post_install
+    system libexec/"bin/pip", "install", "--upgrade", "bristlenose==#{version}"
   end
 
   test do
