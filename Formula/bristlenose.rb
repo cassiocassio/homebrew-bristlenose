@@ -8,11 +8,12 @@ class Bristlenose < Formula
   license "AGPL-3.0-only"
 
   depends_on "ffmpeg"
+  depends_on "pkg-config" => :build
   depends_on "python@3.12"
 
   def install
     venv = virtualenv_create(libexec, "python3.12")
-    venv.pip_install "bristlenose==0.1.0"
+    system libexec/"bin/pip", "install", "bristlenose==#{version}"
     bin.install_symlink libexec/"bin/bristlenose"
   end
 
