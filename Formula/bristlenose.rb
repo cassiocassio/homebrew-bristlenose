@@ -10,11 +10,12 @@ class Bristlenose < Formula
 
   def install
     system Formula["python@3.12"].opt_bin/"python3.12", "-m", "venv", libexec
-    bin.install_symlink libexec/"bin/bristlenose"
   end
 
   def post_install
     system libexec/"bin/pip", "install", "--upgrade", "bristlenose==#{version}"
+    # Create symlink after pip install has created the entry point
+    bin.install_symlink libexec/"bin/bristlenose"
   end
 
   def caveats
