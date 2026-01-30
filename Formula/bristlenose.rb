@@ -9,12 +9,13 @@ class Bristlenose < Formula
   depends_on "python@3.12"
 
   def install
+    # Create a full venv (with pip) using Homebrew's Python
     system Formula["python@3.12"].opt_bin/"python3.12", "-m", "venv", libexec
-  end
 
-  def post_install
-    system libexec/"bin/pip", "install", "--upgrade", "bristlenose==#{version}"
-    # Create symlink after pip install has created the entry point
+    # Install bristlenose and all deps into the venv
+    system libexec/"bin/pip", "install", "bristlenose==#{version}"
+
+    # Symlink the entry point into bin/
     bin.install_symlink libexec/"bin/bristlenose"
   end
 
