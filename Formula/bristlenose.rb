@@ -1,6 +1,4 @@
 class Bristlenose < Formula
-  include Language::Python::Virtualenv
-
   desc "User-research transcription and quote extraction engine"
   homepage "https://github.com/cassiocassio/bristlenose"
   url "https://files.pythonhosted.org/packages/69/f6/8a1ccdb581ac8a22e130c982b359629a38d89bad06124bee2cbdf293c9eb/bristlenose-0.1.0.tar.gz"
@@ -8,16 +6,24 @@ class Bristlenose < Formula
   license "AGPL-3.0-only"
 
   depends_on "ffmpeg"
-  depends_on "pkg-config" => :build
   depends_on "python@3.12"
 
   def install
-    virtualenv_create(libexec, "python3.12")
+    system Formula["python@3.12"].opt_bin/"python3.12", "-m", "venv", libexec
     bin.install_symlink libexec/"bin/bristlenose"
   end
 
   def post_install
     system libexec/"bin/pip", "install", "--upgrade", "bristlenose==#{version}"
+  end
+
+  def caveats
+    <<~EOS
+      Bristlenose requires an Anthropic or OpenAI API key.
+      Set one of:
+        export BRISTLENOSE_ANTHROPIC_API_KEY=sk-ant-...
+        export BRISTLENOSE_OPENAI_API_KEY=sk-...
+    EOS
   end
 
   test do
