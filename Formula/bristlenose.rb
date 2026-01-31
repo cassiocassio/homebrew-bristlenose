@@ -17,6 +17,9 @@ class Bristlenose < Formula
 
     # Symlink the entry point into bin/
     bin.install_symlink libexec/"bin/bristlenose"
+
+    # Install man page from source tarball
+    man1.install "man/bristlenose.1" if (buildpath/"man/bristlenose.1").exist?
   end
 
   def caveats
