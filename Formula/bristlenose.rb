@@ -9,17 +9,28 @@ class Bristlenose < Formula
   depends_on "python@3.12"
 
   def install
-    # Create a full venv (with pip) using Homebrew's Python
+    # Create the venv during install so the Cellar directory exists.
     system Formula["python@3.12"].opt_bin/"python3.12", "-m", "venv", libexec
 
-    # Install bristlenose and all deps into the venv
-    system libexec/"bin/pip", "install", "bristlenose==#{version}"
-
-    # Symlink the entry point into bin/
-    bin.install_symlink libexec/"bin/bristlenose"
+    # Write a wrapper script that delegates to the venv's bristlenose.
+    # Must be a real file (not a symlink) during install so Homebrew's
+    # link phase exposes it in /opt/homebrew/bin/ before post_install
+    # runs pip.
+    (bin/"bristlenose").write <<~SH
+      #!/bin/bash
+      exec "#{libexec}/bin/bristlenose" "$@"
+    SH
+    (bin/"bristlenose").chmod 0755
 
     # Install man page from source tarball
     man1.install "man/bristlenose.1" if (buildpath/"man/bristlenose.1").exist?
+  end
+
+  def post_install
+    # pip install runs in post_install to skip Homebrew's dylib relinking
+    # phase, which fails on pre-built wheels with short Mach-O header
+    # padding (av, cryptography).
+    system libexec/"bin/pip", "install", "bristlenose==#{version}"
   end
 
   def caveats
