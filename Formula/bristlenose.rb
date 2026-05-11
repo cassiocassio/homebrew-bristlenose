@@ -21,6 +21,13 @@ class Bristlenose < Formula
       exec "#{libexec}/bin/bristlenose" "$@"
     SH
     (bin/"bristlenose").chmod 0755
+
+    # Install man page from the sdist source so it lands in the Cellar
+    # before Homebrew's link phase runs. Installing it in post_install
+    # bypasses link, so `man bristlenose` wouldn't resolve. Canonical
+    # path is bristlenose/data/bristlenose.1; man/bristlenose.1 is a
+    # symlink to it (works either way, but the canonical path is clearer).
+    man1.install "bristlenose/data/bristlenose.1"
   end
 
   def post_install
@@ -29,12 +36,6 @@ class Bristlenose < Formula
     # padding (av, cryptography). The [serve] extras pull in fastapi /
     # uvicorn / sqlalchemy so `bristlenose serve` works out of the box.
     system libexec/"bin/pip", "install", "bristlenose[serve]==#{version}"
-
-    # Install man page from the installed package. The sdist's man/
-    # symlink doesn't survive into buildpath, so read it from
-    # site-packages after pip install.
-    man_src = libexec/"lib/python3.12/site-packages/bristlenose/data/bristlenose.1"
-    man1.install man_src if man_src.exist?
   end
 
   def caveats
