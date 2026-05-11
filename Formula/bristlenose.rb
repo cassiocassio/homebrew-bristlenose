@@ -21,16 +21,20 @@ class Bristlenose < Formula
       exec "#{libexec}/bin/bristlenose" "$@"
     SH
     (bin/"bristlenose").chmod 0755
-
-    # Install man page from source tarball
-    man1.install "man/bristlenose.1" if (buildpath/"man/bristlenose.1").exist?
   end
 
   def post_install
     # pip install runs in post_install to skip Homebrew's dylib relinking
     # phase, which fails on pre-built wheels with short Mach-O header
-    # padding (av, cryptography).
-    system libexec/"bin/pip", "install", "bristlenose==#{version}"
+    # padding (av, cryptography). The [serve] extras pull in fastapi /
+    # uvicorn / sqlalchemy so `bristlenose serve` works out of the box.
+    system libexec/"bin/pip", "install", "bristlenose[serve]==#{version}"
+
+    # Install man page from the installed package. The sdist's man/
+    # symlink doesn't survive into buildpath, so read it from
+    # site-packages after pip install.
+    man_src = libexec/"lib/python3.12/site-packages/bristlenose/data/bristlenose.1"
+    man1.install man_src if man_src.exist?
   end
 
   def caveats
