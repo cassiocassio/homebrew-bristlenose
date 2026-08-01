@@ -44,6 +44,12 @@ class Bristlenose < Formula
       Set one of:
         export BRISTLENOSE_ANTHROPIC_API_KEY=sk-ant-...
         export BRISTLENOSE_OPENAI_API_KEY=sk-...
+
+      To keep Bristlenose current, trust this formula:
+        brew trust --formula cassiocassio/bristlenose/bristlenose
+
+      Homebrew 6.0 and later skip third-party taps during `brew upgrade`
+      unless trusted. Without this, updates stop arriving silently.
     EOS
   end
 
