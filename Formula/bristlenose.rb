@@ -35,7 +35,11 @@ class Bristlenose < Formula
     # phase, which fails on pre-built wheels with short Mach-O header
     # padding (av, cryptography). The [serve] extras pull in fastapi /
     # uvicorn / sqlalchemy so `bristlenose serve` works out of the box.
-    system libexec/"bin/pip", "install", "bristlenose[serve]==#{version}"
+    # [voice] adds the voice pass to speaker identification (onnxruntime +
+    # kaldi-native-fbank; the 40 MB model downloads on first use), matching
+    # the Mac app, the Snap and the Fedora package. A version without the
+    # extra installs with a pip warning, not an error.
+    system libexec/"bin/pip", "install", "bristlenose[serve,voice]==#{version}"
   end
 
   def caveats
