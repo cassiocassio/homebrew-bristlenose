@@ -1,8 +1,8 @@
 class Bristlenose < Formula
   desc "User-research transcription and quote extraction engine"
   homepage "https://github.com/cassiocassio/bristlenose"
-  url "https://files.pythonhosted.org/packages/4d/98/7425feddda1812f56b6c57e16797ded3719f120cac08822a8bd3f588b7c4/bristlenose-0.32.0.tar.gz"
-  sha256 "e496cbc4133eb64d98586560b2e28c634e314ffec83ba8d76d594b12b24e524a"
+  url "https://files.pythonhosted.org/packages/b6/0d/8a5ac9a461e74fcaecfe0d557def7771a190ccc780748fc30a44f8256e8c/bristlenose-0.33.0.tar.gz"
+  sha256 "196153c5db1430364ea5855d98b6b86d3024530dfbec520b7047857ce4bbf540"
   license "AGPL-3.0-only"
 
   depends_on "ffmpeg"
