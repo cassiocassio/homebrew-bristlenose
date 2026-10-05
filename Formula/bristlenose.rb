@@ -33,13 +33,14 @@ class Bristlenose < Formula
   def post_install
     # pip install runs in post_install to skip Homebrew's dylib relinking
     # phase, which fails on pre-built wheels with short Mach-O header
-    # padding (av, cryptography). The [serve] extras pull in fastapi /
-    # uvicorn / sqlalchemy so `bristlenose serve` works out of the box.
+    # padding (av, cryptography). The serve-mode packages (fastapi /
+    # uvicorn / sqlalchemy) are core dependencies from the release after
+    # 0.33.0, so no [serve] extra is needed here any more.
     # [voice] adds the voice pass to speaker identification (onnxruntime +
     # kaldi-native-fbank; the 40 MB model downloads on first use), matching
     # the Mac app, the Snap and the Fedora package. A version without the
     # extra installs with a pip warning, not an error.
-    system libexec/"bin/pip", "install", "bristlenose[serve,voice]==#{version}"
+    system libexec/"bin/pip", "install", "bristlenose[voice]==#{version}"
   end
 
   def caveats
