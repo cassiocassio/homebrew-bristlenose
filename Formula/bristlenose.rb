@@ -49,7 +49,7 @@ class Bristlenose < Formula
   def caveats
     <<~EOS
       Bristlenose's analysis runs on the AI model you choose. Store a key
-      for one provider (it is checked, then kept in your Keychain):
+      for one provider (it is checked, then stored securely):
         bristlenose configure claude      # or chatgpt, gemini, azure
       For Mistral, OpenRouter, DeepSeek and others, through any-llm:
         bristlenose configure any-llm
