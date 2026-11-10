@@ -38,17 +38,23 @@ class Bristlenose < Formula
     # 0.33.0, so no [serve] extra is needed here any more.
     # [voice] adds the voice pass to speaker identification (onnxruntime +
     # kaldi-native-fbank; the 40 MB model downloads on first use), matching
-    # the Mac app, the Snap and the Fedora package. A version without the
-    # extra installs with a pip warning, not an error.
-    system libexec/"bin/pip", "install", "bristlenose[voice]==#{version}"
+    # the Mac app, the Snap and the Fedora package. [any-llm] adds Mistral,
+    # OpenRouter and other providers through mozilla-ai/any-llm (from 0.43.0;
+    # it brings mistralai, OpenRouter and DeepSeek ride the openai SDK we
+    # already install). A version without an extra installs with a pip
+    # warning, not an error.
+    system libexec/"bin/pip", "install", "bristlenose[voice,any-llm]==#{version}"
   end
 
   def caveats
     <<~EOS
-      Bristlenose requires an Anthropic or OpenAI API key.
-      Set one of:
-        export BRISTLENOSE_ANTHROPIC_API_KEY=sk-ant-...
-        export BRISTLENOSE_OPENAI_API_KEY=sk-...
+      Bristlenose's analysis runs on the AI model you choose. Store a key
+      for one provider (it is checked, then stored securely):
+        bristlenose configure claude      # or chatgpt, gemini, azure
+      For Mistral, OpenRouter, DeepSeek and others, through any-llm:
+        bristlenose configure any-llm
+      Or a model on this Mac, through Ollama:
+        bristlenose configure local
 
       To keep Bristlenose current, trust this formula:
         brew trust --formula cassiocassio/bristlenose/bristlenose
